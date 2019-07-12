@@ -32,6 +32,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
   };
 });
+
 function home() {
   let url = `http://localhost/api/v1.0/h/gethome?num=${num}`;
   fetch(url, {
@@ -149,6 +150,8 @@ function home() {
         post.appendChild(imageHeader);
         post.appendChild(image);
         post.appendChild(imageFooter);
+        //When I set box-shadow inside css it wast't working,So added here
+        post.style.boxShadow = "0 1px 5px rgba(104, 104, 104, 0.8)"; 
         document.querySelector(".posts").appendChild(post);
       }
     })
