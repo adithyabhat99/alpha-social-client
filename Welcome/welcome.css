@@ -1,0 +1,32 @@
+.header{
+    text-align: center;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+.login{
+    margin-top:20px;
+    margin-bottom: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 10px;
+}
+.login input{
+    border-radius: 2px;
+}
+.create{
+    display: grid;
+    grid-gap: 10px;
+    justify-content: center;
+}
+@media screen and (max-width:825px){
+    .header{
+        grid-template-columns: 1fr; 
+    }
+    .login{
+        grid-template-columns: 1fr;
+        justify-self: center;
+    }
+}
+p{
+    text-align: center;
+}
