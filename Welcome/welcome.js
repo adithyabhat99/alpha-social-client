@@ -21,11 +21,33 @@ document.addEventListener("DOMContentLoaded", function() {
       })
         .then(response => response.json())
         .then(message => {
+          if (message.hasOwnProperty("error")) {
+            alert("Username or password is wrong");
+            return;
+          }
           window.localStorage.setItem(
             "x-access-token",
             message["x-access-token"]
           );
-          history.back();
+          var userurl = `http://localhost/api/v1.0/a/getuserid?username=${username}`;
+          var authHeader = {
+            "Content-Type": "application/json",
+            "x-access-token": message["x-access-token"]
+          };
+          fetch(userurl, {
+            method: "GET",
+            headers: authHeader
+          })
+            .then(response => response.json())
+            .then(Userid => {
+              window.localStorage.setItem("userid", Userid["userid"]);
+              window.localStorage.setItem("username", Userid["username"]);
+              if (window.location.href.indexOf("?")) history.back();
+              location.href = "../index.html";
+            })
+            .catch(error => {
+              console.log(error);
+            });
         })
         .catch(error => {
           console.log(error);
@@ -81,9 +103,13 @@ document.addEventListener("DOMContentLoaded", function() {
             "x-access-token",
             message["x-access-token"]
           );
-          history.back();
+          window.localStorage.setItem("userid", message["userid"]);
+          window.localStorage.setItem("username", un);
+          if (window.location.href.indexOf("?")) history.back();
+          location.href = "../index.html";
         })
         .catch(error => {
+          console.log(error);
           alert(error["error"]);
         });
     }

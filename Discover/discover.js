@@ -1,5 +1,5 @@
 if (!window.localStorage.hasOwnProperty("x-access-token")) {
-  location.href = "Welcome/welcome.html";
+  location.href = "../Welcome/welcome.html";
 }
 const token = window.localStorage.getItem("x-access-token");
 const basicHeader = {
@@ -7,9 +7,10 @@ const basicHeader = {
 };
 var num = 0;
 var executed = false;
+var type = "trending";
 document.addEventListener("DOMContentLoaded", function() {
-  // Home
-  home();
+  // Discover
+  discover(type);
   window.onscroll = function() {
     if (
       document.body.scrollTop > 100 ||
@@ -24,17 +25,32 @@ document.addEventListener("DOMContentLoaded", function() {
       executed == false
     ) {
       num += 1;
-      home();
+      discover(type);
       executed = true;
       setTimeout(() => {
         executed = false;
       }, 3000);
     }
   };
-  
+  document.querySelector("#option").addEventListener("click", event => {
+    if (event.target.innerText == "trending") {
+      event.target.innerText = "latest";
+      type = "latest";
+      num = 0;
+    } else {
+      event.target.innerText = "trending";
+      type = "trending";
+      num = 0;
+    }
+    var postsDiv = document.querySelector(".posts");
+    while (postsDiv.firstChild) {
+      postsDiv.removeChild(postsDiv.firstChild);
+    }
+    discover(type);
+  });
 });
 
-function home() {
+function discover() {
   let url = `http://localhost/api/v1.0/h/gethome?num=${num}`;
   fetch(url, {
     method: "GET",
@@ -135,9 +151,9 @@ function home() {
         }
         nolikes.innerText = data["list"][i]["likes"];
         nocomments.innerText = data["list"][i]["comments"];
-        imageHeader.setAttribute("userid",data["list"][i]["userid"]);
-        image.setAttribute("postid",data["list"][i]["postid"]);
-        imageFooter.setAttribute("postid",data["list"][i]["postid"]);
+        imageHeader.setAttribute("userid", data["list"][i]["userid"]);
+        image.setAttribute("postid", data["list"][i]["postid"]);
+        imageFooter.setAttribute("postid", data["list"][i]["postid"]);
         imageHeader.appendChild(dp);
         imageHeader.appendChild(details);
         imageHeader.appendChild(caption);
@@ -154,7 +170,7 @@ function home() {
         post.appendChild(image);
         post.appendChild(imageFooter);
         //When I set box-shadow inside css it wast't working,So added here
-        post.style.boxShadow = "0 1px 5px rgba(104, 104, 104, 0.8)"; 
+        post.style.boxShadow = "0 1px 5px rgba(104, 104, 104, 0.8)";
         document.querySelector(".posts").appendChild(post);
       }
     })
