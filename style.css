@@ -31,16 +31,11 @@
 a.active {
   color: yellow;
 }
-/* Home */
-.home {
-  display: grid;
-  margin-top: 30px;
-  grid-template-areas: 
-  'posts suggestions';
-  grid-auto-columns: 2fr 1fr;
-}
-.posts{
-  grid-area: posts;
+/* Posts */
+.posts {
+  margin-top: 20px;
+  width: 60%;
+  margin-left: 20%;
 }
 .post{
   box-shadow: var(--shadow);
@@ -49,6 +44,8 @@ a.active {
   display: grid;
   max-height: 50px;
   grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+  justify-items: center;
 }
 .image-header img {
   height: 40px;
@@ -81,15 +78,9 @@ a.active {
 .image-footer i{
   margin-top:10px;
 }
-.suggestions{
-  grid-area: suggestions;
-}
-@media (max-width:800px) {
-  .home {
-    grid-template-areas: 'posts';
-    grid-template-columns: 1fr;
-  }
-  .suggestions {
-    display: none;
+@media (max-width: 800px) {
+  .posts {
+    width: 100%;
+    margin-left: 0;
   }
 }

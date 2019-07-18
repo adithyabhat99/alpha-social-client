@@ -7,7 +7,7 @@ const basicHeader = {
 };
 var num = 0;
 var executed = false;
-var type = "trending";
+var type = "latest";
 document.addEventListener("DOMContentLoaded", function() {
   // Discover
   discover(type);
@@ -48,10 +48,81 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     discover(type);
   });
+
+  document.querySelector(".posts").addEventListener("click", event => {
+    var e = event.target.className;
+    if (
+      e == "image-header" ||
+      e == "dp" ||
+      e == "username" ||
+      e == "location" ||
+      e == "details" ||
+      e == "caption"
+    ) {
+      event.preventDefault();
+      location.href = `../User/user.html?userid=${window.localStorage.getItem(
+        "userid"
+      )}`;
+    }
+    if (
+      e == "image-footer" ||
+      e == "comment" ||
+      e == "comments" ||
+      e == "pimg"
+    ) {
+      location.href = `../Post/post.html?postid=${event.target.parentElement.getAttribute(
+        "postid"
+      )}`;
+    }
+    if (e == "like far fa-thumbs-up") {
+      var lurl = `http://localhost/api/v1.0/p/like/post?postid=${event.target.parentElement.getAttribute(
+        "postid"
+      )}`;
+      var ulurl = `http://localhost/api/v1.0/p/delete/like?postid=${event.target.parentElement.getAttribute(
+        "postid"
+      )}`;
+      if (event.target.style.color == "black") {
+        event.target.style.color = "yellow";
+        fetch(lurl, {
+          method: "PUT",
+          headers: basicHeader
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.hasOwnProperty("error")) {
+              console.log("error");
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      } else {
+        event.target.style.color = "black";
+        fetch(ulurl, {
+          method: "DELETE",
+          headers: basicHeader
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.hasOwnProperty("error")) {
+              console.log("error");
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      }
+    }
+    if (e == "likes") {
+      location.href = `../List/list.html?type=likes&postid=${event.target.parentElement.getAttribute(
+        "postid"
+      )}`;
+    }
+  });
 });
 
 function discover() {
-  let url = `http://localhost/api/v1.0/h/gethome?num=${num}`;
+  let url = `http://localhost/api/v1.0/h/discover/${type}?num=${num}`;
   fetch(url, {
     method: "GET",
     headers: basicHeader

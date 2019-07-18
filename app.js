@@ -31,7 +31,78 @@ document.addEventListener("DOMContentLoaded", function() {
       }, 3000);
     }
   };
-  
+
+  document.querySelector(".posts").addEventListener("click", event => {
+    var e = event.target.className;
+    if (
+      e == "image-header" ||
+      e == "dp" ||
+      e == "username" ||
+      e == "location" ||
+      e == "details" ||
+      e == "caption"
+    ) {
+      event.preventDefault();
+      location.href = `User/user.html?userid=${window.localStorage.getItem(
+        "userid"
+      )}`;
+    }
+    if (
+      e == "image-footer" ||
+      e == "comment" ||
+      e == "comments" ||
+      e == "pimg"
+    ) {
+      location.href = `Post/post.html?postid=${event.target.parentElement.getAttribute(
+        "postid"
+      )}`;
+    }
+    if (e == "like far fa-thumbs-up") {
+      var lurl = `http://localhost/api/v1.0/p/like/post?postid=${event.target.parentElement.getAttribute(
+        "postid"
+      )}`;
+      var ulurl = `http://localhost/api/v1.0/p/delete/like?postid=${event.target.parentElement.getAttribute(
+        "postid"
+      )}`;
+      if (event.target.style.color == "black") {
+        event.target.style.color = "yellow";
+        fetch(lurl, {
+          method: "PUT",
+          headers: basicHeader
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.hasOwnProperty("error")) {
+              console.log("error");
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      } else {
+        event.target.style.color = "black";
+        fetch(ulurl, {
+          method: "DELETE",
+          headers: basicHeader
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.hasOwnProperty("error")) {
+              console.log("error");
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      }
+    }
+    if (e == "likes") {
+      location.href = `List/list.html?type=likes&postid=${event.target.parentElement.getAttribute(
+        "postid"
+      )}`;
+    }
+  });
+
 });
 
 function home() {
@@ -135,9 +206,9 @@ function home() {
         }
         nolikes.innerText = data["list"][i]["likes"];
         nocomments.innerText = data["list"][i]["comments"];
-        imageHeader.setAttribute("userid",data["list"][i]["userid"]);
-        image.setAttribute("postid",data["list"][i]["postid"]);
-        imageFooter.setAttribute("postid",data["list"][i]["postid"]);
+        imageHeader.setAttribute("userid", data["list"][i]["userid"]);
+        image.setAttribute("postid", data["list"][i]["postid"]);
+        imageFooter.setAttribute("postid", data["list"][i]["postid"]);
         imageHeader.appendChild(dp);
         imageHeader.appendChild(details);
         imageHeader.appendChild(caption);
@@ -150,11 +221,12 @@ function home() {
         imageFooter.appendChild(likes);
         imageFooter.appendChild(comments);
         image.appendChild(pimg);
+        post.setAttribute("postid", data["list"][i]["postid"]);
         post.appendChild(imageHeader);
         post.appendChild(image);
         post.appendChild(imageFooter);
         //When I set box-shadow inside css it wast't working,So added here
-        post.style.boxShadow = "0 1px 5px rgba(104, 104, 104, 0.8)"; 
+        post.style.boxShadow = "0 1px 5px rgba(104, 104, 104, 0.8)";
         document.querySelector(".posts").appendChild(post);
       }
     })
