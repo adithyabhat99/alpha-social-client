@@ -1,5 +1,5 @@
 if (!window.localStorage.hasOwnProperty("x-access-token")) {
-  location.href = "../Welcome/welcome.html";
+  location.href = "../Welcome/welcome.html?redirected=true";
 }
 const token = window.localStorage.getItem("x-access-token");
 const basicHeader = {
