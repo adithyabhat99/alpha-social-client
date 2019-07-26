@@ -1,0 +1,5 @@
+.create {
+  display: grid;
+  grid-gap: 20px;
+  justify-content: center;
+}

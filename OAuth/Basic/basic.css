@@ -1,0 +1,12 @@
+:root {
+  --shadow: 0 1px 5px rgba(104, 104, 104, 0.8);
+}
+body{
+    text-align: center;
+    display: grid;
+    grid-gap: 50px;
+}
+button{
+    margin-left: 30%;
+    margin-right: 30%;
+}

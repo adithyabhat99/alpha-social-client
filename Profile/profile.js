@@ -1,5 +1,6 @@
 if (!window.localStorage.hasOwnProperty("x-access-token")) {
-  location.href = "../Welcome/welcome.html?redirected=true";
+  location.href =
+    "../Welcome/welcome.html?redirected=true&referrer=Profile/profile.html";
 }
 const token = window.localStorage.getItem("x-access-token");
 const basicHeader = {
@@ -16,30 +17,39 @@ document.addEventListener("DOMContentLoaded", event => {
     .then(resonse => resonse.json())
     .then(data => {
       if (data.hasOwnProperty("error")) {
-        console.log("error");
+        console.log(data);
+        return;
       }
-      document.querySelector(".username").innerText+=data["details"]["username"];
-      document.querySelector(".firstname").innerText+=data["details"]["firstname"];
-      document.querySelector(".lastname").innerText+=data["details"]["lastname"];
-      document.querySelector(".email").innerText+=data["details"]["email"]==null?"":data["details"]["email"];
-      document.querySelector(".phone").innerText+=data["details"]["phoneno"]==null?"":data["details"]["phoneno"];
-      document.querySelector(".followers").innerText+=data["details"]["followerscount"];
-      document.querySelector(".following").innerText+=data["details"]["followingcount"];
-      document.querySelector(".bio").innerText+=data["details"]["bio"]==null?"":data["details"]["bio"];
+      document.querySelector(".username").innerText +=
+        data["details"]["username"];
+      document.querySelector(".firstname").innerText +=
+        data["details"]["firstname"];
+      document.querySelector(".lastname").innerText +=
+        data["details"]["lastname"];
+      document.querySelector(".email").innerText +=
+        data["details"]["email"] == null ? "" : data["details"]["email"];
+      document.querySelector(".phone").innerText +=
+        data["details"]["phoneno"] == null ? "" : data["details"]["phoneno"];
+      document.querySelector(".followers").innerText +=
+        data["details"]["followerscount"];
+      document.querySelector(".following").innerText +=
+        data["details"]["followingcount"];
+      document.querySelector(".bio").innerText +=
+        data["details"]["bio"] == null ? "" : data["details"]["bio"];
       var dpurl = `http://localhost/api/v1.0/a/getprofilepic`;
-        fetch(dpurl, {
-          method: "GET",
-          headers: basicHeader
+      fetch(dpurl, {
+        method: "GET",
+        headers: basicHeader
+      })
+        .then(resonse => resonse.blob())
+        .then(dpBlob => {
+          var dpourl = URL.createObjectURL(dpBlob);
+          document.querySelector(".mydp").src = dpourl;
         })
-          .then(resonse => resonse.blob())
-          .then(dpBlob => {
-            var dpourl = URL.createObjectURL(dpBlob);
-            document.querySelector(".mydp").src = dpourl;
-          })
-          .catch(error => {
-            console.log(error);
-            return;
-          });
+        .catch(error => {
+          console.log(error);
+          return;
+        });
     })
     .catch(error => {
       console.log(error);
@@ -67,40 +77,31 @@ document.addEventListener("DOMContentLoaded", event => {
     }
   };
 
-
-
-  document.querySelector(".Details").addEventListener("click",event=>{
-      e=event.target.className;
-      if(e=="followers"){
-        location.href=`../Likes/likes.html?type=followers&userid=${window.localStorage.getItem("userid")}`;
-      }
-      if(e=="following"){
-        location.href=`../Likes/likes.html?type=following&userid=${window.localStorage.getItem("userid")}`;
-      }
-      if(e=="edit far fa-edit"){
-        location.href=`../Edit/Profile/eProfile.html`;
-      }
-      if(e=="upload fas fa-upload"){
-        location.href="../Upload/upload.html";
-      }
-  });
-
-
-  document.querySelector(".posts").addEventListener("click", event => {
-    var e = event.target.className;
-    if (
-      e == "image-header" ||
-      e == "dp" ||
-      e == "username" ||
-      e == "location" ||
-      e == "details" ||
-      e == "caption"
-    ) {
-      event.preventDefault();
-      location.href = `../User/user.html?userid=${window.localStorage.getItem(
+  document.querySelector(".Details").addEventListener("click", event => {
+    e = event.target.className;
+    if (e == "followers") {
+      location.href = `../List/list.html?type=followers&userid=${window.localStorage.getItem(
         "userid"
       )}`;
     }
+    if (e == "following") {
+      location.href = `../List/list.html?type=following&userid=${window.localStorage.getItem(
+        "userid"
+      )}`;
+    }
+    if (e == "edit far fa-edit") {
+      location.href = `../Edit/Profile/eProfile.html`;
+    }
+    if (e == "upload fas fa-upload") {
+      location.href = "../Upload/upload.html";
+    }
+    if (e == "dev fab fa-dev") {
+      location.href = "../OAuth/Dev/dev.html";
+    }
+  });
+
+  document.querySelector(".posts").addEventListener("click", event => {
+    var e = event.target.className;
     if (
       e == "image-footer" ||
       e == "comment" ||
@@ -127,7 +128,8 @@ document.addEventListener("DOMContentLoaded", event => {
           .then(response => response.json())
           .then(data => {
             if (data.hasOwnProperty("error")) {
-              console.log("error");
+              console.log(data);
+              return;
             }
           })
           .catch(error => {
@@ -167,6 +169,7 @@ function Posts() {
     .then(data => {
       if (data.hasOwnProperty("error")) {
         alert("Error");
+        console.log(data);
         return;
       }
       for (let i = 0; i < data["list"].length; i++) {
@@ -181,7 +184,7 @@ function Posts() {
         let username = document.createElement("a");
         username.className = "username";
         let location = document.createElement("p");
-        post.className = "location";
+        location.className = "location";
         let caption = document.createElement("p");
         caption.className = "caption";
         let image = document.createElement("div");
@@ -219,13 +222,13 @@ function Posts() {
             console.log(error);
             return;
           });
-        username.href = `User/User.html?userid=${userid}`;
+        username.href = `../User/user.html?userid=${userid}`;
         var uurl = `http://localhost/api/v1.0/a/getusername?userid2=${userid}`;
         fetch(uurl, { method: "GET", headers: basicHeader })
           .then(response => response.json())
           .then(usname => {
             if (usname.hasOwnProperty("error")) {
-              console.log("error");
+              console.log(data);
               return;
             }
             username.innerText = usname["username"];

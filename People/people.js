@@ -1,5 +1,5 @@
 if (!window.localStorage.hasOwnProperty("x-access-token")) {
-  location.href = "../Welcome/welcome.html?redirected=true";
+  location.href = "../Welcome/welcome.html?redirected=true&referrer=People/people.html";
 }
 const token = window.localStorage.getItem("x-access-token");
 const basicHeader = {
@@ -19,7 +19,7 @@ function requests() {
     .then(response => response.json())
     .then(data => {
       if (data.hasOwnProperty("error")) {
-        alert("error1");
+        console.log(data);
         return;
       }
       for (let i = 0; i < data["list"].length; i++) {

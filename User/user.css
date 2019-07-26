@@ -1,0 +1,128 @@
+:root {
+  --shadow: 0 1px 5px rgba(104, 104, 104, 0.8);
+}
+/* Back to top */
+#back-top {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+  z-index: 99;
+  border: none;
+  outline: none;
+  text-decoration: none;
+  padding: 15px;
+  border-radius: 50%;
+  color: yellow;
+}
+/* Top Nav */
+.topnav {
+  display: grid;
+  grid-gap: 0px;
+  grid-template-columns: repeat(4, 1fr);
+  justify-items: center;
+}
+.topnav a {
+  text-decoration: none;
+  color: black;
+  align-content: center;
+}
+.topnav a:hover,
+a.active {
+  color: yellow;
+}
+
+/* Details */
+.Details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 20px;
+  grid-gap: 20px;
+}
+.Details img {
+  justify-self: center;
+  height: 300px;
+}
+.Details .det {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+.det p {
+  align-self: center;
+  text-align: center;
+}
+.follow {
+  height: 18px;
+  margin-left: 15%;
+  margin-right: 15%;
+  align-self: center;
+}
+.bio {
+  text-align: center;
+}
+@media (max-width: 800px) {
+  .Details {
+    grid-template-columns: 1fr;
+  }
+  .Details .det {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+/* Posts */
+.posts {
+  margin-top: 20px;
+  width: 60%;
+  margin-left: 20%;
+}
+.post {
+  box-shadow: var(--shadow);
+}
+.image-header {
+  display: grid;
+  max-height: 50px;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+  justify-items: center;
+}
+.image-header img {
+  height: 40px;
+  margin-top: 10px;
+}
+.image-header p {
+  margin-top: 0;
+}
+.details p,
+.details a {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  text-decoration: none;
+  color: black;
+}
+.image {
+  margin-top: 10px;
+}
+.image img {
+  width: 100%;
+}
+.image-footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+.image-footer a,
+.image-footer p {
+  margin-top: 10px;
+  text-decoration: none;
+}
+.image-footer i {
+  margin-top: 10px;
+}
+@media (max-width: 800px) {
+  .posts {
+    width: 100%;
+    margin-left: 0;
+  }
+  .image-header img {
+    height: 30px;
+  }
+}

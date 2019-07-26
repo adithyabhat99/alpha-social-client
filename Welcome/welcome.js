@@ -42,8 +42,7 @@ document.addEventListener("DOMContentLoaded", function() {
             .then(Userid => {
               window.localStorage.setItem("userid", Userid["userid"]);
               window.localStorage.setItem("username", Userid["username"]);
-              if (window.location.href.indexOf("?")) history.back();
-              location.href = "../index.html";
+              redirectionFunc();
             })
             .catch(error => {
               console.log(error);
@@ -97,7 +96,6 @@ document.addEventListener("DOMContentLoaded", function() {
         .then(message => {
           if (message.hasOwnProperty("error")) {
             alert(message["error"]);
-            return;
           }
           window.localStorage.setItem(
             "x-access-token",
@@ -105,8 +103,7 @@ document.addEventListener("DOMContentLoaded", function() {
           );
           window.localStorage.setItem("userid", message["userid"]);
           window.localStorage.setItem("username", un);
-          if (window.location.href.indexOf("?")) history.back();
-          location.href = "../index.html";
+          redirectionFunc();
         })
         .catch(error => {
           console.log(error);
@@ -115,3 +112,26 @@ document.addEventListener("DOMContentLoaded", function() {
     }
   });
 });
+
+function redirectionFunc() {
+  let Url = new URL(location.href);
+  if (Url.searchParams.get("redirected") == "true") {
+    if (
+      Url.searchParams.get("devid") != null &&
+      Url.searchParams.get("access") == "basic" &&
+      Url.searchParams.get("function") != null &&
+      Url.searchParams.get("referrer") != null
+    ) {
+      location.href = `../OAuth/basic.html?devid=${Url.searchParams.get(
+        "devid"
+      )}&referrer=${Url.searchParams.get(
+        "referrer"
+      )}&function=${Url.searchParams.get("function")}`;
+    }
+    if (Url.searchParams.get("referrer") != null) {
+      location.href = `../${Url.searchParams.get("referrer")}`;
+    }
+  } else {
+    location.href = "../index.html";
+  }
+}

@@ -1,5 +1,5 @@
 if (!window.localStorage.hasOwnProperty("x-access-token")) {
-  location.href = "Welcome/welcome.html?redirected=true";
+  location.href = "Welcome/welcome.html?redirected=true&referrer=index.html";
 }
 const token = window.localStorage.getItem("x-access-token");
 const basicHeader = {
@@ -43,9 +43,15 @@ document.addEventListener("DOMContentLoaded", function() {
       e == "caption"
     ) {
       event.preventDefault();
-      location.href = `User/user.html?userid=${window.localStorage.getItem(
-        "userid"
-      )}`;
+      let User;
+      if (e == "image-header") User = event.target.getAttribute("userid");
+      if (e == "dp" || e == "details" || e == "caption")
+        User = event.target.parentElement.getAttribute("userid");
+      if (e == "location" || e == "username")
+        User = User = event.target.parentElement.parentElement.getAttribute(
+          "userid"
+        );
+      location.href = `User/user.html?userid=${User}`;
     }
     if (
       e == "image-footer" ||
@@ -73,7 +79,8 @@ document.addEventListener("DOMContentLoaded", function() {
           .then(response => response.json())
           .then(data => {
             if (data.hasOwnProperty("error")) {
-              console.log("error");
+              console.log(data);
+              return;
             }
           })
           .catch(error => {
@@ -88,7 +95,8 @@ document.addEventListener("DOMContentLoaded", function() {
           .then(response => response.json())
           .then(data => {
             if (data.hasOwnProperty("error")) {
-              console.log("error");
+              console.log(data);
+              return;
             }
           })
           .catch(error => {
@@ -102,7 +110,6 @@ document.addEventListener("DOMContentLoaded", function() {
       )}`;
     }
   });
-
 });
 
 function home() {
@@ -115,6 +122,7 @@ function home() {
     .then(data => {
       if (data.hasOwnProperty("error")) {
         alert("Error");
+        console.log(data);
         return;
       }
       for (let i = 0; i < data["list"].length; i++) {
@@ -129,7 +137,7 @@ function home() {
         let username = document.createElement("a");
         username.className = "username";
         let location = document.createElement("p");
-        post.className = "location";
+        location.className = "location";
         let caption = document.createElement("p");
         caption.className = "caption";
         let image = document.createElement("div");
@@ -152,7 +160,7 @@ function home() {
         let comments = document.createElement("a");
         comments.className = "comments";
         comments.innerText = "Comments";
-        var userid = data["list"][i]["userid"];
+        let userid = data["list"][i]["userid"];
         var dpurl = `http://localhost/api/v1.0/a/getprofilepic?userid2=${userid}`;
         fetch(dpurl, {
           method: "GET",
@@ -167,13 +175,13 @@ function home() {
             console.log(error);
             return;
           });
-        username.href = `User/User.html?userid=${userid}`;
+        username.href = `User/user.html?userid=${userid}`;
         var uurl = `http://localhost/api/v1.0/a/getusername?userid2=${userid}`;
         fetch(uurl, { method: "GET", headers: basicHeader })
           .then(response => response.json())
           .then(usname => {
             if (usname.hasOwnProperty("error")) {
-              console.log("error");
+              console.log(data);
               return;
             }
             username.innerText = usname["username"];

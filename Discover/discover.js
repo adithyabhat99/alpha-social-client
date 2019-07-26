@@ -1,5 +1,6 @@
 if (!window.localStorage.hasOwnProperty("x-access-token")) {
-  location.href = "../Welcome/welcome.html?redirected=true";
+  location.href =
+    "../Welcome/welcome.html?redirected=true&referrer=Discover/discover.html";
 }
 const token = window.localStorage.getItem("x-access-token");
 const basicHeader = {
@@ -60,9 +61,15 @@ document.addEventListener("DOMContentLoaded", function() {
       e == "caption"
     ) {
       event.preventDefault();
-      location.href = `../User/user.html?userid=${window.localStorage.getItem(
-        "userid"
-      )}`;
+      let User;
+      if (e == "image-header") User = event.target.getAttribute("userid");
+      if (e == "dp" || e == "details" || e == "caption")
+        User = event.target.parentElement.getAttribute("userid");
+      if (e == "location" || e == "username")
+        User = User = event.target.parentElement.parentElement.getAttribute(
+          "userid"
+        );
+      location.href = `../User/user.html?userid=${User}`;
     }
     if (
       e == "image-footer" ||
@@ -90,7 +97,8 @@ document.addEventListener("DOMContentLoaded", function() {
           .then(response => response.json())
           .then(data => {
             if (data.hasOwnProperty("error")) {
-              console.log("error");
+              console.log(data);
+              return;
             }
           })
           .catch(error => {
@@ -105,7 +113,8 @@ document.addEventListener("DOMContentLoaded", function() {
           .then(response => response.json())
           .then(data => {
             if (data.hasOwnProperty("error")) {
-              console.log("error");
+              console.log(data);
+              return;
             }
           })
           .catch(error => {
@@ -131,6 +140,7 @@ function discover() {
     .then(data => {
       if (data.hasOwnProperty("error")) {
         alert("Error");
+        console.log(data);
         return;
       }
       for (let i = 0; i < data["list"].length; i++) {
@@ -145,7 +155,7 @@ function discover() {
         let username = document.createElement("a");
         username.className = "username";
         let location = document.createElement("p");
-        post.className = "location";
+        location.className = "location";
         let caption = document.createElement("p");
         caption.className = "caption";
         let image = document.createElement("div");
@@ -183,13 +193,13 @@ function discover() {
             console.log(error);
             return;
           });
-        username.href = `User/User.html?userid=${userid}`;
+        username.href = `../User/user.html?userid=${userid}`;
         var uurl = `http://localhost/api/v1.0/a/getusername?userid2=${userid}`;
         fetch(uurl, { method: "GET", headers: basicHeader })
           .then(response => response.json())
           .then(usname => {
             if (usname.hasOwnProperty("error")) {
-              console.log("error");
+              console.log(data);
               return;
             }
             username.innerText = usname["username"];

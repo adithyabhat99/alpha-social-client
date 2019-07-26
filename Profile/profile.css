@@ -59,14 +59,14 @@ a.active {
   align-self: center;
   justify-self: center;
 }
-.bio{
+.bio {
   text-align: center;
 }
 @media (max-width: 800px) {
   .Details {
     grid-template-columns: 1fr;
   }
-  .Details .det{
+  .Details .det {
     grid-template-columns: 1fr 1fr;
   }
 }
@@ -88,6 +88,7 @@ a.active {
 }
 .image-header img {
   height: 40px;
+  margin-top: 10px;
 }
 .image-header p {
   margin-top: 0;
@@ -122,5 +123,8 @@ a.active {
   .posts {
     width: 100%;
     margin-left: 0;
+  }
+  .image-header img {
+    height: 30px;
   }
 }

@@ -1,4 +1,4 @@
-:root{
+:root {
   --shadow: 0 1px 5px rgba(104, 104, 104, 0.8);
 }
 /* Back to top */
@@ -37,7 +37,7 @@ a.active {
   width: 60%;
   margin-left: 20%;
 }
-.post{
+.post {
   box-shadow: var(--shadow);
 }
 .image-header {
@@ -49,8 +49,9 @@ a.active {
 }
 .image-header img {
   height: 40px;
+  margin-top: 10px;
 }
-.image-header p{
+.image-header p {
   margin-top: 0;
 }
 .details p,
@@ -66,21 +67,25 @@ a.active {
 .image img {
   width: 100%;
 }
-.image-footer{
+.image-footer {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
 }
-.image-footer a,.image-footer p{
-  margin-top:10px;
+.image-footer a,
+.image-footer p {
+  margin-top: 10px;
   text-decoration: none;
 }
-.image-footer i{
-  margin-top:10px;
+.image-footer i {
+  margin-top: 10px;
 }
 @media (max-width: 800px) {
   .posts {
     width: 100%;
     margin-left: 0;
+  }
+  .image-header img {
+    height: 30px;
   }
 }
