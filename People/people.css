@@ -33,14 +33,16 @@ a.active {
 /* People */
 .people {
   display: grid;
-  grid-template-areas: "requests suggestions";
+  grid-template-columns: 1fr;
   grid-gap: 15px;
+  margin-left: 20%;
+  margin-right: 20%;
 }
-.requests {
-  grid-area: requests;
-}
-.suggestions {
-  grid-area: suggestions;
+.search{
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: 6fr 1fr;
+  grid-gap: 30px;
 }
 /* Request */
 .request {
@@ -48,6 +50,8 @@ a.active {
   grid-template-columns: repeat(4, 1fr);
   height: 80px;
   box-shadow: var(--shadow);
+  text-align: center;
+  grid-gap: 10px;
 }
 .request img {
   height: 50px;
@@ -63,48 +67,19 @@ a.active {
   align-self: center;
   margin-right: 0px;
 }
-.request button:hover{
-    color: black;
-    background-color: yellow;
+.request button:hover {
+  color: black;
+  background-color: yellow;
 }
 .request p {
   align-self: center;
 }
-
-/* Suggestsion */
-
-.suggest {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  height: 70px;
-  box-shadow: var(--shadow);
-}
-.suggest img {
-  height: 50px;
-  align-self: center;
-  justify-self: center;
-}
-.suggest p {
-  margin-right: 0px;
-}
-.suggest button {
-  max-height: 30px;
-  max-width: 100px;
-  align-self: center;
-  margin-right: 0px;
-}
-.suggest button:hover{
-    color: black;
-    background-color: yellow;
-}
-.suggest p {
-  align-self: center;
-}
-
 @media (max-width: 800px) {
   .people {
-    grid-template-areas:
-      "requests"
-      "suggestions";
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .request img {
+    height: 30px;
   }
 }

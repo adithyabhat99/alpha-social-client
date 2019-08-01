@@ -1,3 +1,4 @@
+const host = "http://f982ac52.ngrok.io";
 if (!window.localStorage.hasOwnProperty("x-access-token")) {
   location.href = "Welcome/welcome.html?redirected=true&referrer=index.html";
 }
@@ -55,7 +56,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     if (
       e == "image-footer" ||
-      e == "comment" ||
+      e == "comment far fa-comment" ||
       e == "comments" ||
       e == "pimg"
     ) {
@@ -64,12 +65,16 @@ document.addEventListener("DOMContentLoaded", function() {
       )}`;
     }
     if (e == "like far fa-thumbs-up") {
-      var lurl = `http://localhost/api/v1.0/p/like/post?postid=${event.target.parentElement.getAttribute(
-        "postid"
-      )}`;
-      var ulurl = `http://localhost/api/v1.0/p/delete/like?postid=${event.target.parentElement.getAttribute(
-        "postid"
-      )}`;
+      var lurl =
+        host +
+        `/api/v1.0/p/like/post?postid=${event.target.parentElement.getAttribute(
+          "postid"
+        )}`;
+      var ulurl =
+        host +
+        `/api/v1.0/p/delete/like?postid=${event.target.parentElement.getAttribute(
+          "postid"
+        )}`;
       if (event.target.style.color == "black") {
         event.target.style.color = "yellow";
         fetch(lurl, {
@@ -82,6 +87,9 @@ document.addEventListener("DOMContentLoaded", function() {
               console.log(data);
               return;
             }
+            let l = event.target.parentElement.firstChild.nextSibling.innerText;
+            let L = parseInt(l) + 1;
+            event.target.parentElement.firstChild.nextSibling.innerText = L.toString();
           })
           .catch(error => {
             console.log(error);
@@ -98,6 +106,9 @@ document.addEventListener("DOMContentLoaded", function() {
               console.log(data);
               return;
             }
+            let l = event.target.parentElement.firstChild.nextSibling.innerText;
+            let L = parseInt(l) - 1;
+            event.target.parentElement.firstChild.nextSibling.innerText = L.toString();
           })
           .catch(error => {
             console.log(error);
@@ -113,7 +124,7 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function home() {
-  let url = `http://localhost/api/v1.0/h/gethome?num=${num}`;
+  let url = host + `/api/v1.0/h/gethome?num=${num}`;
   fetch(url, {
     method: "GET",
     headers: basicHeader
@@ -161,7 +172,7 @@ function home() {
         comments.className = "comments";
         comments.innerText = "Comments";
         let userid = data["list"][i]["userid"];
-        var dpurl = `http://localhost/api/v1.0/a/getprofilepic?userid2=${userid}`;
+        var dpurl = host + `/api/v1.0/a/getprofilepic?userid2=${userid}`;
         fetch(dpurl, {
           method: "GET",
           headers: basicHeader
@@ -176,7 +187,7 @@ function home() {
             return;
           });
         username.href = `User/user.html?userid=${userid}`;
-        var uurl = `http://localhost/api/v1.0/a/getusername?userid2=${userid}`;
+        var uurl = host + `/api/v1.0/a/getusername?userid2=${userid}`;
         fetch(uurl, { method: "GET", headers: basicHeader })
           .then(response => response.json())
           .then(usname => {
@@ -192,9 +203,8 @@ function home() {
           });
         location.innerText = data["list"][i]["location"];
         caption.innerText = data["list"][i]["caption"];
-        var purl = `http://localhost/api/v1.0/p/getpost?postid=${
-          data["list"][i]["postid"]
-        }`;
+        var purl =
+          host + `/api/v1.0/p/getpost?postid=${data["list"][i]["postid"]}`;
         fetch(purl, {
           metod: "GET",
           headers: basicHeader
@@ -233,6 +243,7 @@ function home() {
         post.appendChild(imageHeader);
         post.appendChild(image);
         post.appendChild(imageFooter);
+        post.setAttribute("postid", data["list"][i]["postid"]);
         //When I set box-shadow inside css it wast't working,So added here
         post.style.boxShadow = "0 1px 5px rgba(104, 104, 104, 0.8)";
         document.querySelector(".posts").appendChild(post);

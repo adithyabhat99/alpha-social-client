@@ -15,11 +15,12 @@
   </head>
   <body>
     <p class="header">Upload</p>
-    <input type="file" class="Image" />
+    <input type="file" class="Image" id="Image"/>
+    <img src="" alt="" class="preview">
     <div class="Upload">
-      <input type="text" class="caption" placeholder="Caption" />
-      <input type="text" class="location" placeholder="Location" />
-      <input type="checkbox" class="public" />
+      <input type="text" class="caption" id="caption" placeholder="Caption" />
+      <input type="text" class="location" id="location" placeholder="Location" />
+      <input type="checkbox" class="public" id="public"/>
       <label class="Label">Public</label>
     </div>
     <button class="send">Upload</button>

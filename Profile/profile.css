@@ -59,7 +59,16 @@ a.active {
   align-self: center;
   justify-self: center;
 }
+.dev{
+  justify-self: center;
+}
+.logout{
+  justify-self: center;
+}
 .bio {
+  text-align: center;
+}
+.astatus{
   text-align: center;
 }
 @media (max-width: 800px) {

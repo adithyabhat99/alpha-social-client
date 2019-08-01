@@ -26,6 +26,9 @@ button:hover{
 .Image:hover{
     background-color: yellow;
 }
+.preview{
+    width:100%;
+}
 @media (max-width:500px){
     .Image{
         margin-left: 0;

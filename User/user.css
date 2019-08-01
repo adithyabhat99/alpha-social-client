@@ -51,6 +51,12 @@ a.active {
   align-self: center;
   text-align: center;
 }
+.report {
+  height: 18px;
+  margin-left: 15%;
+  margin-right: 15%;
+  align-self: center;
+}
 .follow {
   height: 18px;
   margin-left: 15%;

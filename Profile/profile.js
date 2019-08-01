@@ -1,3 +1,4 @@
+const host = "http://f982ac52.ngrok.io";
 if (!window.localStorage.hasOwnProperty("x-access-token")) {
   location.href =
     "../Welcome/welcome.html?redirected=true&referrer=Profile/profile.html";
@@ -9,7 +10,7 @@ const basicHeader = {
 var num = 0;
 var executed = false;
 document.addEventListener("DOMContentLoaded", event => {
-  var myurl = `http://localhost/api/v1.0/a/getmydetails`;
+  var myurl = host + `/api/v1.0/a/getmydetails`;
   fetch(myurl, {
     method: "GET",
     headers: basicHeader
@@ -36,7 +37,11 @@ document.addEventListener("DOMContentLoaded", event => {
         data["details"]["followingcount"];
       document.querySelector(".bio").innerText +=
         data["details"]["bio"] == null ? "" : data["details"]["bio"];
-      var dpurl = `http://localhost/api/v1.0/a/getprofilepic`;
+
+      document.querySelector(".astatus").innerText +=
+        data["details"]["public"] == 1 ? " Public" : " Private";
+
+      var dpurl = host + `/api/v1.0/a/getprofilepic`;
       fetch(dpurl, {
         method: "GET",
         headers: basicHeader
@@ -98,13 +103,19 @@ document.addEventListener("DOMContentLoaded", event => {
     if (e == "dev fab fa-dev") {
       location.href = "../OAuth/Dev/dev.html";
     }
+    if (e == "logout fas fa-sign-out-alt") {
+      localStorage.removeItem("x-access-token");
+      localStorage.removeItem("userid");
+      localStorage.removeItem("username");
+      location.href = "../Welcome/welcome.html";
+    }
   });
 
   document.querySelector(".posts").addEventListener("click", event => {
     var e = event.target.className;
     if (
       e == "image-footer" ||
-      e == "comment" ||
+      e == "comment far fa-comment" ||
       e == "comments" ||
       e == "pimg"
     ) {
@@ -113,12 +124,16 @@ document.addEventListener("DOMContentLoaded", event => {
       )}`;
     }
     if (e == "like far fa-thumbs-up") {
-      var lurl = `http://localhost/api/v1.0/p/like/post?postid=${event.target.parentElement.getAttribute(
-        "postid"
-      )}`;
-      var ulurl = `http://localhost/api/v1.0/p/delete/like?postid=${event.target.parentElement.getAttribute(
-        "postid"
-      )}`;
+      var lurl =
+        host +
+        `/api/v1.0/p/like/post?postid=${event.target.parentElement.getAttribute(
+          "postid"
+        )}`;
+      var ulurl =
+        host +
+        `/api/v1.0/p/delete/like?postid=${event.target.parentElement.getAttribute(
+          "postid"
+        )}`;
       if (event.target.style.color == "black") {
         event.target.style.color = "yellow";
         fetch(lurl, {
@@ -131,6 +146,9 @@ document.addEventListener("DOMContentLoaded", event => {
               console.log(data);
               return;
             }
+            let l = event.target.parentElement.firstChild.nextSibling.innerText;
+            let L = parseInt(l) + 1;
+            event.target.parentElement.firstChild.nextSibling.innerText = L.toString();
           })
           .catch(error => {
             console.log(error);
@@ -146,6 +164,9 @@ document.addEventListener("DOMContentLoaded", event => {
             if (data.hasOwnProperty("error")) {
               console.log("error");
             }
+            let l = event.target.parentElement.firstChild.nextSibling.innerText;
+            let L = parseInt(l) - 1;
+            event.target.parentElement.firstChild.nextSibling.innerText = L.toString();
           })
           .catch(error => {
             console.log(error);
@@ -160,7 +181,7 @@ document.addEventListener("DOMContentLoaded", event => {
   });
 });
 function Posts() {
-  let url = `http://localhost/api/v1.0/p/getpostsfor/user?num=${num}`;
+  let url = host + `/api/v1.0/p/getpostsfor/user?num=${num}`;
   fetch(url, {
     method: "GET",
     headers: basicHeader
@@ -208,7 +229,7 @@ function Posts() {
         comments.className = "comments";
         comments.innerText = "Comments";
         var userid = data["list"][i]["userid"];
-        var dpurl = `http://localhost/api/v1.0/a/getprofilepic?userid2=${userid}`;
+        var dpurl = host + `/api/v1.0/a/getprofilepic?userid2=${userid}`;
         fetch(dpurl, {
           method: "GET",
           headers: basicHeader
@@ -223,7 +244,7 @@ function Posts() {
             return;
           });
         username.href = `../User/user.html?userid=${userid}`;
-        var uurl = `http://localhost/api/v1.0/a/getusername?userid2=${userid}`;
+        var uurl = host + `/api/v1.0/a/getusername?userid2=${userid}`;
         fetch(uurl, { method: "GET", headers: basicHeader })
           .then(response => response.json())
           .then(usname => {
@@ -239,9 +260,8 @@ function Posts() {
           });
         location.innerText = data["list"][i]["location"];
         caption.innerText = data["list"][i]["caption"];
-        var purl = `http://localhost/api/v1.0/p/getpost?postid=${
-          data["list"][i]["postid"]
-        }`;
+        var purl =
+          host + `/api/v1.0/p/getpost?postid=${data["list"][i]["postid"]}`;
         fetch(purl, {
           metod: "GET",
           headers: basicHeader
@@ -279,6 +299,7 @@ function Posts() {
         post.appendChild(imageHeader);
         post.appendChild(image);
         post.appendChild(imageFooter);
+        post.setAttribute("postid", data["list"][i]["postid"]);
         //When I set box-shadow inside css it wast't working,So added here
         post.style.boxShadow = "0 1px 5px rgba(104, 104, 104, 0.8)";
         document.querySelector(".posts").appendChild(post);

@@ -1,5 +1,7 @@
+const host = "http://f982ac52.ngrok.io";
 if (!window.localStorage.hasOwnProperty("x-access-token")) {
-  location.href = "../Welcome/welcome.html?redirected=true&referrer=List/list.html";
+  location.href =
+    "../Welcome/welcome.html?redirected=true&referrer=List/list.html";
 }
 const token = window.localStorage.getItem("x-access-token");
 const basicHeader = {
@@ -52,17 +54,28 @@ function List() {
   if (type == "followers") {
     topHeader.innerText = "Followers";
     let userid = new URL(location.href).searchParams.get("userid");
-    url = `http://localhost/api/v1.0/f/getfollowerslist?userid=${userid}&num=${num}`;
+    url = host + `/api/v1.0/f/getfollowerslist?userid2=${userid}&num=${num}`;
   }
   if (type == "following") {
     topHeader.innerText = "Following";
     let userid = new URL(location.href).searchParams.get("userid");
-    url = `http://localhost/api/v1.0/f/getfollowinglist?userid=${userid}`;
+    url = host + `/api/v1.0/f/getfollowinglist?userid2=${userid}`;
   }
   if (type == "likes") {
     topHeader.innerText = "Likes";
     let postid = new URL(location.href).searchParams.get("postid");
-    url = `http://localhost/api/v1.0/p/getlikeslist?postid=${postid}&num=${num}`;
+    url = host + `/api/v1.0/p/getlikeslist?postid=${postid}&num=${num}`;
+  }
+  if (type == "search") {
+    topHeader.innerText = "Users";
+    let fn = new URL(location.href).searchParams.get("fn");
+    let ln = new URL(location.href).searchParams.get("ln");
+    if (fn != null && ln != null) {
+      url = host + `/api/v1.0/a/search?firstname=${fn}&lastname=${ln}`;
+    }
+    if (fn != null && ln == null) {
+      url = host + `/api/v1.0/a/search?firstname=${fn}`;
+    }
   }
   fetch(url, { method: "GET", headers: basicHeader })
     .then(response => response.json())
@@ -74,8 +87,6 @@ function List() {
       Array.from(data["list"]).forEach(element => {
         let username = element["username"];
         let userid = element["userid"];
-        let f = element["userfollows"];
-        let myid = window.localStorage.getItem("userid");
 
         let Request = document.createElement("div");
         Request.setAttribute("userid", userid);
@@ -85,7 +96,7 @@ function List() {
         let reP = document.createElement("p");
         reP.className = "reP";
         reP.innerText = username;
-        var dpurl = `http://localhost/api/v1.0/a/getprofilepic?userid2=${userid}`;
+        var dpurl = host + `/api/v1.0/a/getprofilepic?userid2=${userid}`;
         fetch(dpurl, {
           method: "GET",
           headers: basicHeader
@@ -105,6 +116,6 @@ function List() {
       });
     })
     .catch(error => {
-      console.log("error");
+      console.log(error);
     });
 }

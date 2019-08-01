@@ -1,5 +1,6 @@
-const lurl = "http://localhost/api/v1.0/a/login";
-const curl = "http://localhost/api/v1.0/a/createaccount";
+const host = "http://f982ac52.ngrok.io";
+const lurl = host + "/api/v1.0/a/login";
+const curl = host + "/api/v1.0/a/createaccount";
 const basicHeader = {
   "Content-Type": "application/json"
 };
@@ -29,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function() {
             "x-access-token",
             message["x-access-token"]
           );
-          var userurl = `http://localhost/api/v1.0/a/getuserid?username=${username}`;
+          var userurl = host + `/api/v1.0/a/getuserid?username=${username}`;
           var authHeader = {
             "Content-Type": "application/json",
             "x-access-token": message["x-access-token"]

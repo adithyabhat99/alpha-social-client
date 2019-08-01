@@ -1,5 +1,16 @@
+.header{
+  text-align: center;
+}
 .create {
   display: grid;
   grid-gap: 20px;
   justify-content: center;
+  text-align: center;
+}
+.pic{
+  margin-top: 30px;
+  text-align: center;
+}
+.preview{
+  width: 100%;
 }

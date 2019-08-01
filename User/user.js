@@ -1,3 +1,4 @@
+const host = "http://f982ac52.ngrok.io";
 const myid = window.localStorage.getItem("userid");
 const HREF = new URL(location.href);
 const userid = HREF.searchParams.get("userid");
@@ -62,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     if (
       e == "image-footer" ||
-      e == "comment" ||
+      e == "comment far fa-comment" ||
       e == "comments" ||
       e == "pimg"
     ) {
@@ -71,14 +72,21 @@ document.addEventListener("DOMContentLoaded", function() {
       )}`;
     }
     if (e == "like far fa-thumbs-up") {
-      var lurl = `http://localhost/api/v1.0/p/like/post?postid=${event.target.parentElement.getAttribute(
-        "postid"
-      )}`;
-      var ulurl = `http://localhost/api/v1.0/p/delete/like?postid=${event.target.parentElement.getAttribute(
-        "postid"
-      )}`;
+      var lurl =
+        host +
+        `/api/v1.0/p/like/post?postid=${event.target.parentElement.getAttribute(
+          "postid"
+        )}`;
+      var ulurl =
+        host +
+        `/api/v1.0/p/delete/like?postid=${event.target.parentElement.getAttribute(
+          "postid"
+        )}`;
       if (event.target.style.color == "black") {
         event.target.style.color = "yellow";
+        let l = event.target.parentElement.firstChild.nextSibling.innerText;
+        let L = parseInt(l) + 1;
+        event.target.parentElement.firstChild.nextSibling.innerText = L.toString();
         fetch(lurl, {
           method: "PUT",
           headers: basicHeader
@@ -105,6 +113,9 @@ document.addEventListener("DOMContentLoaded", function() {
               console.log(data);
               return;
             }
+            let l = event.target.parentElement.firstChild.nextSibling.innerText;
+            let L = parseInt(l) - 1;
+            event.target.parentElement.firstChild.nextSibling.innerText = L.toString();
           })
           .catch(error => {
             console.log(error);
@@ -117,10 +128,76 @@ document.addEventListener("DOMContentLoaded", function() {
       )}`;
     }
   });
+
+  document.querySelector(".det").addEventListener("click", event => {
+    let e = event.target.className;
+    if (e == "followers") {
+      location.href = `../List/list.html?type=followers&userid=${userid}`;
+    }
+    if (e == "following") {
+      location.href = `../List/list.html?type=following&userid=${userid}`;
+    }
+    if (event.target.id == "follow") {
+      let furl = host + `/api/v1.0/f/follow/user?userid2=${userid}`;
+      fetch(furl, {
+        method: "PUT",
+        headers: basicHeader
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.hasOwnProperty("error")) {
+            console.log(data);
+            return;
+          }
+          document.querySelector("#follow").innerText = "Unfollow";
+          document.querySelector("#follow").id = "unfollow";
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+    if (event.target.id == "unfollow") {
+      let furl = host + `/api/v1.0/f/unfollow?userid2=${userid}`;
+      fetch(furl, {
+        method: "DELETE",
+        headers: basicHeader
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.hasOwnProperty("error")) {
+            console.log(data);
+            return;
+          }
+          document.querySelector("#unfollow").innerText = "Follow";
+          document.querySelector("#unfollow").id = "follow";
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+    if (event.target.id == "report") {
+      let furl = host + `/api/v1.0/f/reportuser?userid2=${userid}`;
+      fetch(furl, {
+        method: "POST",
+        headers: basicHeader
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.hasOwnProperty("error")) {
+            console.log(data);
+            return;
+          }
+          alert("Reported");
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+  });
 });
 
 function posts() {
-  let url = `http://localhost/api/v1.0/p/getpostsfor/user?userid2=${userid}&num=${num}`;
+  let url = host + `/api/v1.0/p/getpostsfor/user?userid2=${userid}&num=${num}`;
   fetch(url, {
     method: "GET",
     headers: basicHeader
@@ -168,7 +245,7 @@ function posts() {
         comments.className = "comments";
         comments.innerText = "Comments";
         var userid = data["list"][i]["userid"];
-        var dpurl = `http://localhost/api/v1.0/a/getprofilepic?userid2=${userid}`;
+        var dpurl = host + `/api/v1.0/a/getprofilepic?userid2=${userid}`;
         fetch(dpurl, {
           method: "GET",
           headers: basicHeader
@@ -183,7 +260,7 @@ function posts() {
             return;
           });
         username.href = `../User/user.html?userid=${userid}`;
-        var uurl = `http://localhost/api/v1.0/a/getusername?userid2=${userid}`;
+        var uurl = host + `/api/v1.0/a/getusername?userid2=${userid}`;
         fetch(uurl, { method: "GET", headers: basicHeader })
           .then(response => response.json())
           .then(usname => {
@@ -199,9 +276,8 @@ function posts() {
           });
         location.innerText = data["list"][i]["location"];
         caption.innerText = data["list"][i]["caption"];
-        var purl = `http://localhost/api/v1.0/p/getpost?postid=${
-          data["list"][i]["postid"]
-        }`;
+        var purl =
+          host + `/api/v1.0/p/getpost?postid=${data["list"][i]["postid"]}`;
         fetch(purl, {
           metod: "GET",
           headers: basicHeader
@@ -240,6 +316,7 @@ function posts() {
         post.appendChild(imageHeader);
         post.appendChild(image);
         post.appendChild(imageFooter);
+        post.setAttribute("postid", data["list"][i]["postid"]);
         //When I set box-shadow inside css it wast't working,So added here
         post.style.boxShadow = "0 1px 5px rgba(104, 104, 104, 0.8)";
         document.querySelector(".posts").appendChild(post);
@@ -252,7 +329,7 @@ function posts() {
 }
 
 function UserDetails() {
-  const userurl = `http://localhost/api/v1.0/a/getdetails?userid2=${userid}`;
+  let userurl = host + `/api/v1.0/a/getdetails?userid2=${userid}`;
   fetch(userurl, {
     method: "GET",
     headers: basicHeader
@@ -263,8 +340,34 @@ function UserDetails() {
         console.log(data);
         return;
       }
+      data = data["details"];
+      document.querySelector(".Username").innerText += data["username"];
+      document.querySelector(".Firstname").innerText += data["firstname"];
+      document.querySelector(".Lastname").innerText += data["lastname"];
+      document.querySelector(".bio").innerText +=
+        data["bio"] == null ? "" : data["bio"];
+      document.querySelector(".followers").innerText += data["followerscount"];
+      document.querySelector(".following").innerText += data["followingcount"];
+      let userfollows = data["userfollows"];
+      if (userfollows) {
+        document.querySelector(".follow").innerText = "Unfollow";
+        document.querySelector(".follow").id = "unfollow";
+      } else {
+        document.querySelector(".follow").innerText = "Follow";
+        document.querySelector(".follow").id = "follow";
+      }
     })
     .catch(error => {
       console.log(error);
+    });
+  let purl = host + `/api/v1.0/a/getprofilepic?userid2=${userid}`;
+  fetch(purl, {
+    method: "GET",
+    headers: basicHeader
+  })
+    .then(response => response.blob())
+    .then(pblob => {
+      var pourl = URL.createObjectURL(pblob);
+      document.querySelector(".mydp").src = pourl;
     });
 }

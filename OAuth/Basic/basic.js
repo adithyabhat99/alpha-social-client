@@ -1,3 +1,4 @@
+const host = "http://f982ac52.ngrok.io";
 if (!window.localStorage.hasOwnProperty("x-access-token")) {
   location.href =
     "../Welcome/welcome.html?redirected=true&referrer=OAuth/Basic/basic.html";
@@ -15,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function() {
   let func = Url.searchParams.get("function");
   document.querySelector(".ok").addEventListener("click", event => {
     event.preventDefault();
-    let url = `http://localhost/api/v1.0/auth/grantbasicaccess?devid=${devid}`;
+    let url = host + `/api/v1.0/auth/grantbasicaccess?devid=${devid}`;
     fetch(url, {
       method: "PUT",
       headers: basicHeader

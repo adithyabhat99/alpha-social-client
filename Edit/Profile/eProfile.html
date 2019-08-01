@@ -7,31 +7,34 @@
     <title>Edit Profile</title>
     <link rel="stylesheet" href="eProfile.css" />
     <script src="eProfile.js"></script>
-    <script src="https://kit.fontawesome.com/ca7070ab60.js"></script>
     <link
       href="https://fonts.googleapis.com/css?family=Titillium+Web:700&display=swap"
       rel="stylesheet"
     />
   </head>
   <body>
-    <div class="header">
-      <h1>Hi,</h1>
-    </div>
+    <h1 class="header"></h1>
     <div class="create">
       <h2>Update your account</h2>
-      <p>Enter the things you want to change</p>
+      <h3>Enter the things you want to change</h3>
       <input type="text" id="fn" placeholder="Firstname" />
       <input type="text" id="ln" placeholder="Lastname" />
       <input type="text" id="un" placeholder="Username" />
       <div class="PassWord">
-          <input type="password" id="opw" placeholder="Old Password*">
+        <input type="password" id="opw" placeholder="Old Password*" />
         <input type="password" id="pw" placeholder="New Password*" />
       </div>
       <input type="text" id="em" placeholder="Email" />
       <input type="text" id="ph" placeholder="Phone" />
-      <input type="text" id="ab" placeholder="About" />
-      <div class="check"><input type="checkbox" id="pb" />public account</div>
+      <input type="text" id="ab" placeholder="Bio" />
+      <div class="check"><input type="checkbox" id="pb" />Public Account<input type="button" id="pbtn" value="Change"></div>
       <input type="button" id="cbtn" value="Update" />
+    </div>
+    <div class="pic">
+      <h2 class="footer">Upload new profile picture</h2>
+      <input type="file" class="Image" id="Image" />
+      <img src="" alt="" class="preview" />
+      <button class="upload">Upload</button>
     </div>
   </body>
 </html>
