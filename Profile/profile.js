@@ -41,14 +41,14 @@ document.addEventListener("DOMContentLoaded", event => {
       document.querySelector(".astatus").innerText +=
         data["details"]["public"] == 1 ? " Public" : " Private";
 
-      var dpurl = host + `/api/v1.0/a/getprofilepic`;
+      var dpurl = host + `/api/v1.0/a/getprofilepic?userid2=${window.localStorage.getItem("userid")}`;
       fetch(dpurl, {
         method: "GET",
         headers: basicHeader
       })
         .then(resonse => resonse.blob())
         .then(dpBlob => {
-          var dpourl = URL.createObjectURL(dpBlob);
+          let dpourl = URL.createObjectURL(dpBlob);
           document.querySelector(".mydp").src = dpourl;
         })
         .catch(error => {

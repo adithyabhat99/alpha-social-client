@@ -41,7 +41,9 @@ a.active {
 }
 .Details img {
   justify-self: center;
-  height: 300px;
+}
+.mydp{
+  width:100%;
 }
 .Details .det {
   display: grid;

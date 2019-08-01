@@ -120,9 +120,9 @@ function requests() {
         console.log(data);
         return;
       }
-      if (data["list"].length == 0) {
-        document.querySelector(".requestHeader").style.display = "none";
-      }
+      // if (data["list"].length == 0) {
+      //   document.querySelector(".requestHeader").style.display = "none";
+      // }
       for (let i = 0; i < data["list"].length; i++) {
         let request = document.createElement("div");
         request.className = "request";

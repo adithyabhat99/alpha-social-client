@@ -8,6 +8,9 @@ const basicHeader = {
   "x-access-token": token,
   "Content-Type": "application/json"
 };
+const fileHeader = {
+  "x-access-token": token
+};
 const userid = window.localStorage.getItem("userid");
 const username = window.localStorage.getItem("username");
 document.addEventListener("DOMContentLoaded", () => {
@@ -69,7 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
     form.append("file", Image);
     fetch(purl, {
       method: "PUT",
-      headers: basicHeader,
+      headers: fileHeader,
       body: form
     })
       .then(r => r.json())
