@@ -1,4 +1,4 @@
-const host = "http://f982ac52.ngrok.io";
+const host = "http://localhost";
 const postid = new URL(location.href).searchParams.get("postid");
 if (!window.localStorage.hasOwnProperty("x-access-token")) {
   location.href = `../Welcome/welcome.html?redirected=true&referrer=Post/post.html?postid=${postid}`;
@@ -12,7 +12,18 @@ const myid = window.localStorage.getItem("userid");
 var num = 0;
 var executed = false;
 document.addEventListener("DOMContentLoaded", event => {
-  const url = host + `/api/v1.0/p/getpostdetails?postid=${postid}`;
+
+  document.querySelector(".image-header").addEventListener("click",event=>{
+    let e=event.target.className;
+    let Userid=document.querySelector(".image-header").getAttribute("userid");
+    if(e=="image-header" || e=="dp" || e=="username" || e=="details"){
+      location.href=`../User/user.html?userid=${Userid}`;
+    }
+  });
+
+
+
+  const url = host + `/api/v1.0/p/postdetails?postid=${postid}`;
   fetch(url, {
     method: "GET",
     headers: basicHeader
@@ -34,7 +45,7 @@ document.addEventListener("DOMContentLoaded", event => {
       document.querySelector(".like").style.color =
         data["userliked"] == 1 ? "yellow" : "black";
       document.querySelector(".nolikes").innerText = data["likes"];
-      let uurl = host + `/api/v1.0/a/getusername?userid2=${data["userid"]}`;
+      let uurl = host + `/api/v1.0/a/username?userid2=${data["userid"]}`;
       fetch(uurl, { method: "GET", headers: basicHeader })
         .then(response => response.json())
         .then(usname => {
@@ -49,7 +60,7 @@ document.addEventListener("DOMContentLoaded", event => {
           return;
         });
 
-      let dpurl = host + `/api/v1.0/a/getprofilepic?userid2=${data["userid"]}`;
+      let dpurl = host + `/api/v1.0/a/profilepic?userid2=${data["userid"]}`;
       fetch(dpurl, {
         method: "GET",
         headers: basicHeader
@@ -63,7 +74,7 @@ document.addEventListener("DOMContentLoaded", event => {
           console.log(error);
           return;
         });
-      let purl = host + `/api/v1.0/p/getpost?postid=${data["postid"]}`;
+      let purl = host + `/api/v1.0/p/post?postid=${data["postid"]}`;
       fetch(purl, {
         metod: "GET",
         headers: basicHeader
@@ -84,14 +95,6 @@ document.addEventListener("DOMContentLoaded", event => {
 
   window.onscroll = function() {
     if (
-      document.body.scrollTop > 100 ||
-      document.documentElement.scrollTop > 100
-    ) {
-      document.getElementById("back-top").style.display = "block";
-    } else {
-      document.getElementById("back-top").style.display = "none";
-    }
-    if (
       window.scrollY > document.body.offsetHeight - window.outerHeight &&
       executed == false
     ) {
@@ -107,9 +110,11 @@ document.addEventListener("DOMContentLoaded", event => {
   document.querySelector(".image-footer").addEventListener("click", event => {
     let e = event.target.className;
     if (e == "like far fa-thumbs-up") {
-      var lurl = host + `/api/v1.0/p/like/post?postid=${postid}`;
-      var ulurl = host + `/api/v1.0/p/delete/like?postid=${postid}`;
-
+      var lurl =
+        host +
+        `/api/v1.0/p/like?postid=${event.target.parentElement.getAttribute(
+          "postid"
+        )}`;
       if (event.target.style.color == "black") {
         event.target.style.color = "yellow";
         fetch(lurl, {
@@ -131,7 +136,7 @@ document.addEventListener("DOMContentLoaded", event => {
           });
       } else {
         event.target.style.color = "black";
-        fetch(ulurl, {
+        fetch(lurl, {
           method: "DELETE",
           headers: basicHeader
         })
@@ -155,7 +160,7 @@ document.addEventListener("DOMContentLoaded", event => {
     }
   });
 
-  let curl = host + `/api/v1.0/p/getcommentslist?postid=${postid}&num=${num}`;
+  let curl = host + `/api/v1.0/p/commentslist?postid=${postid}&num=${num}`;
   fetch(curl, {
     method: "GET",
     headers: basicHeader
@@ -200,7 +205,7 @@ document.addEventListener("DOMContentLoaded", event => {
       alert("Empty comment not possible");
       return;
     }
-    let curl = host + `/api/v1.0/p/comment/post?postid=${postid}`;
+    let curl = host + `/api/v1.0/p/comment?postid=${postid}`;
     let data = { comment: Message };
     fetch(curl, {
       method: "POST",
@@ -239,7 +244,7 @@ document.addEventListener("DOMContentLoaded", event => {
     if (e == "delete") {
       let durl =
         host +
-        `/api/v1.0/p/delete/comment?commentid=${event.target.getAttribute(
+        `/api/v1.0/p/comment?commentid=${event.target.getAttribute(
           "commentid"
         )}`;
       fetch(durl, {

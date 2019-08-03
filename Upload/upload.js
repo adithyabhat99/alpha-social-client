@@ -1,4 +1,4 @@
-const host = "http://f982ac52.ngrok.io";
+const host = "http://localhost";
 if (!window.localStorage.hasOwnProperty("x-access-token")) {
   location.href = "../Welcome/welcome.html?redirected=true&referrer=index.html";
 }

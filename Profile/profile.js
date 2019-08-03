@@ -1,4 +1,4 @@
-const host = "http://f982ac52.ngrok.io";
+const host = "http://localhost";
 if (!window.localStorage.hasOwnProperty("x-access-token")) {
   location.href =
     "../Welcome/welcome.html?redirected=true&referrer=Profile/profile.html";
@@ -10,7 +10,7 @@ const basicHeader = {
 var num = 0;
 var executed = false;
 document.addEventListener("DOMContentLoaded", event => {
-  var myurl = host + `/api/v1.0/a/getmydetails`;
+  var myurl = host + `/api/v1.0/a/myaccount`;
   fetch(myurl, {
     method: "GET",
     headers: basicHeader
@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", event => {
       document.querySelector(".astatus").innerText +=
         data["details"]["public"] == 1 ? " Public" : " Private";
 
-      var dpurl = host + `/api/v1.0/a/getprofilepic?userid2=${window.localStorage.getItem("userid")}`;
+      var dpurl = host + `/api/v1.0/a/profilepic?userid2=${window.localStorage.getItem("userid")}`;
       fetch(dpurl, {
         method: "GET",
         headers: basicHeader
@@ -126,12 +126,7 @@ document.addEventListener("DOMContentLoaded", event => {
     if (e == "like far fa-thumbs-up") {
       var lurl =
         host +
-        `/api/v1.0/p/like/post?postid=${event.target.parentElement.getAttribute(
-          "postid"
-        )}`;
-      var ulurl =
-        host +
-        `/api/v1.0/p/delete/like?postid=${event.target.parentElement.getAttribute(
+        `/api/v1.0/p/like?postid=${event.target.parentElement.getAttribute(
           "postid"
         )}`;
       if (event.target.style.color == "black") {
@@ -155,7 +150,7 @@ document.addEventListener("DOMContentLoaded", event => {
           });
       } else {
         event.target.style.color = "black";
-        fetch(ulurl, {
+        fetch(lurl, {
           method: "DELETE",
           headers: basicHeader
         })
@@ -181,7 +176,7 @@ document.addEventListener("DOMContentLoaded", event => {
   });
 });
 function Posts() {
-  let url = host + `/api/v1.0/p/getpostsfor/user?num=${num}`;
+  let url = host + `/api/v1.0/p/userpostslist?num=${num}`;
   fetch(url, {
     method: "GET",
     headers: basicHeader
@@ -229,7 +224,7 @@ function Posts() {
         comments.className = "comments";
         comments.innerText = "Comments";
         var userid = data["list"][i]["userid"];
-        var dpurl = host + `/api/v1.0/a/getprofilepic?userid2=${userid}`;
+        var dpurl = host + `/api/v1.0/a/profilepic?userid2=${userid}`;
         fetch(dpurl, {
           method: "GET",
           headers: basicHeader
@@ -244,7 +239,7 @@ function Posts() {
             return;
           });
         username.href = `../User/user.html?userid=${userid}`;
-        var uurl = host + `/api/v1.0/a/getusername?userid2=${userid}`;
+        var uurl = host + `/api/v1.0/a/username?userid2=${userid}`;
         fetch(uurl, { method: "GET", headers: basicHeader })
           .then(response => response.json())
           .then(usname => {
@@ -261,7 +256,7 @@ function Posts() {
         location.innerText = data["list"][i]["location"];
         caption.innerText = data["list"][i]["caption"];
         var purl =
-          host + `/api/v1.0/p/getpost?postid=${data["list"][i]["postid"]}`;
+          host + `/api/v1.0/p/post?postid=${data["list"][i]["postid"]}`;
         fetch(purl, {
           metod: "GET",
           headers: basicHeader

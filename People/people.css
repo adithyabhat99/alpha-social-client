@@ -57,6 +57,7 @@ a.active {
   height: 50px;
   align-self: center;
   justify-self: center;
+  border-radius: 50%;
 }
 .request p {
   margin-right: 0px;

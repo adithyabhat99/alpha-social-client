@@ -1,10 +1,27 @@
 :root {
   --shadow: 0 1px 5px rgba(104, 104, 104, 0.8);
 }
+/* Top Nav */
+.topnav {
+  display: grid;
+  grid-gap: 0px;
+  grid-template-columns: repeat(4, 1fr);
+  justify-items: center;
+}
+.topnav a {
+  text-decoration: none;
+  color: black;
+  align-content: center;
+}
+.topnav a:hover,
+a.active {
+  color: yellow;
+}
 /* Posts */
 .post {
   box-shadow: var(--shadow);
   width: 80%;
+  margin-top: 25px;
   margin-left: 10%;
 }
 .image-header {
@@ -17,6 +34,7 @@
 .image-header img {
   height: 40px;
   margin-top: 10px;
+  border-radius: 50%;
 }
 .image-header p {
   margin-top: 0;
@@ -98,16 +116,17 @@
   grid-template-columns: 1fr 3fr 1fr;
   box-shadow: var(--shadow);
 }
-.Username,.message{
+.Username,
+.message {
   align-self: center;
   margin-top: 10px;
   margin-bottom: 10px;
 }
-.delete{
-    display: none;
-    margin:20px 20px 20px 20px;
+.delete {
+  display: none;
+  margin: 20px 20px 20px 20px;
 }
-button:hover{
+button:hover {
   background-color: yellow;
 }
 @media (max-width: 800px) {

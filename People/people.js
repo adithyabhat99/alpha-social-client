@@ -1,4 +1,4 @@
-const host = "http://f982ac52.ngrok.io";
+const host = "http://localhost";
 if (!window.localStorage.hasOwnProperty("x-access-token")) {
   location.href =
     "../Welcome/welcome.html?redirected=true&referrer=People/people.html";
@@ -109,7 +109,7 @@ document.addEventListener("DOMContentLoaded", event => {
   });
 });
 function requests() {
-  var url = host + `/api/v1.0/f/getrequestlist`;
+  var url = host + `/api/v1.0/f/requestslist`;
   fetch(url, {
     method: "GET",
     headers: basicHeader
@@ -120,9 +120,6 @@ function requests() {
         console.log(data);
         return;
       }
-      // if (data["list"].length == 0) {
-      //   document.querySelector(".requestHeader").style.display = "none";
-      // }
       for (let i = 0; i < data["list"].length; i++) {
         let request = document.createElement("div");
         request.className = "request";
@@ -138,7 +135,7 @@ function requests() {
         reject.innerText = "Reject";
         var dpurl =
           host +
-          `/api/v1.0/a/getprofilepic?userid2=${data["list"][i]["userid"]}`;
+          `/api/v1.0/a/profilepic?userid2=${data["list"][i]["userid"]}`;
         fetch(dpurl, {
           method: "GET",
           headers: basicHeader
@@ -187,7 +184,7 @@ function suggestions() {
         rep.className = "reP";
         var dpurl =
           host +
-          `/api/v1.0/a/getprofilepic?userid2=${data["list"][i]["userid"]}`;
+          `/api/v1.0/a/profilepic?userid2=${data["list"][i]["userid"]}`;
         fetch(dpurl, {
           method: "GET",
           headers: basicHeader

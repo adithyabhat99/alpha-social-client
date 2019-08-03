@@ -1,4 +1,4 @@
-const host = "http://f982ac52.ngrok.io";
+const host = "http://localhost";
 const myid = window.localStorage.getItem("userid");
 const HREF = new URL(location.href);
 const userid = HREF.searchParams.get("userid");
@@ -74,12 +74,7 @@ document.addEventListener("DOMContentLoaded", function() {
     if (e == "like far fa-thumbs-up") {
       var lurl =
         host +
-        `/api/v1.0/p/like/post?postid=${event.target.parentElement.getAttribute(
-          "postid"
-        )}`;
-      var ulurl =
-        host +
-        `/api/v1.0/p/delete/like?postid=${event.target.parentElement.getAttribute(
+        `/api/v1.0/p/like?postid=${event.target.parentElement.getAttribute(
           "postid"
         )}`;
       if (event.target.style.color == "black") {
@@ -103,7 +98,7 @@ document.addEventListener("DOMContentLoaded", function() {
           });
       } else {
         event.target.style.color = "black";
-        fetch(ulurl, {
+        fetch(lurl, {
           method: "DELETE",
           headers: basicHeader
         })
@@ -138,7 +133,7 @@ document.addEventListener("DOMContentLoaded", function() {
       location.href = `../List/list.html?type=following&userid=${userid}`;
     }
     if (event.target.id == "follow") {
-      let furl = host + `/api/v1.0/f/follow/user?userid2=${userid}`;
+      let furl = host + `/api/v1.0/f/follow?userid2=${userid}`;
       fetch(furl, {
         method: "PUT",
         headers: basicHeader
@@ -197,7 +192,7 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function posts() {
-  let url = host + `/api/v1.0/p/getpostsfor/user?userid2=${userid}&num=${num}`;
+  let url = host + `/api/v1.0/p/userpostslist?userid2=${userid}&num=${num}`;
   fetch(url, {
     method: "GET",
     headers: basicHeader
@@ -245,7 +240,7 @@ function posts() {
         comments.className = "comments";
         comments.innerText = "Comments";
         var userid = data["list"][i]["userid"];
-        var dpurl = host + `/api/v1.0/a/getprofilepic?userid2=${userid}`;
+        var dpurl = host + `/api/v1.0/a/profilepic?userid2=${userid}`;
         fetch(dpurl, {
           method: "GET",
           headers: basicHeader
@@ -260,7 +255,7 @@ function posts() {
             return;
           });
         username.href = `../User/user.html?userid=${userid}`;
-        var uurl = host + `/api/v1.0/a/getusername?userid2=${userid}`;
+        var uurl = host + `/api/v1.0/a/username?userid2=${userid}`;
         fetch(uurl, { method: "GET", headers: basicHeader })
           .then(response => response.json())
           .then(usname => {
@@ -277,7 +272,7 @@ function posts() {
         location.innerText = data["list"][i]["location"];
         caption.innerText = data["list"][i]["caption"];
         var purl =
-          host + `/api/v1.0/p/getpost?postid=${data["list"][i]["postid"]}`;
+          host + `/api/v1.0/p/post?postid=${data["list"][i]["postid"]}`;
         fetch(purl, {
           metod: "GET",
           headers: basicHeader
@@ -329,7 +324,7 @@ function posts() {
 }
 
 function UserDetails() {
-  let userurl = host + `/api/v1.0/a/getdetails?userid2=${userid}`;
+  let userurl = host + `/api/v1.0/a/details?userid2=${userid}`;
   fetch(userurl, {
     method: "GET",
     headers: basicHeader
@@ -360,7 +355,7 @@ function UserDetails() {
     .catch(error => {
       console.log(error);
     });
-  let purl = host + `/api/v1.0/a/getprofilepic?userid2=${userid}`;
+  let purl = host + `/api/v1.0/a/profilepic?userid2=${userid}`;
   fetch(purl, {
     method: "GET",
     headers: basicHeader

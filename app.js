@@ -1,4 +1,4 @@
-const host = "http://f982ac52.ngrok.io";
+const host = "http://localhost";
 if (!window.localStorage.hasOwnProperty("x-access-token")) {
   location.href = "Welcome/welcome.html?redirected=true&referrer=index.html";
 }
@@ -67,12 +67,7 @@ document.addEventListener("DOMContentLoaded", function() {
     if (e == "like far fa-thumbs-up") {
       var lurl =
         host +
-        `/api/v1.0/p/like/post?postid=${event.target.parentElement.getAttribute(
-          "postid"
-        )}`;
-      var ulurl =
-        host +
-        `/api/v1.0/p/delete/like?postid=${event.target.parentElement.getAttribute(
+        `/api/v1.0/p/like?postid=${event.target.parentElement.getAttribute(
           "postid"
         )}`;
       if (event.target.style.color == "black") {
@@ -96,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function() {
           });
       } else {
         event.target.style.color = "black";
-        fetch(ulurl, {
+        fetch(lurl, {
           method: "DELETE",
           headers: basicHeader
         })
@@ -124,7 +119,7 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function home() {
-  let url = host + `/api/v1.0/h/gethome?num=${num}`;
+  let url = host + `/api/v1.0/h/home?num=${num}`;
   fetch(url, {
     method: "GET",
     headers: basicHeader
@@ -172,7 +167,7 @@ function home() {
         comments.className = "comments";
         comments.innerText = "Comments";
         let userid = data["list"][i]["userid"];
-        var dpurl = host + `/api/v1.0/a/getprofilepic?userid2=${userid}`;
+        var dpurl = host + `/api/v1.0/a/profilepic?userid2=${userid}`;
         fetch(dpurl, {
           method: "GET",
           headers: basicHeader
@@ -187,7 +182,7 @@ function home() {
             return;
           });
         username.href = `User/user.html?userid=${userid}`;
-        var uurl = host + `/api/v1.0/a/getusername?userid2=${userid}`;
+        var uurl = host + `/api/v1.0/a/username?userid2=${userid}`;
         fetch(uurl, { method: "GET", headers: basicHeader })
           .then(response => response.json())
           .then(usname => {
@@ -204,7 +199,7 @@ function home() {
         location.innerText = data["list"][i]["location"];
         caption.innerText = data["list"][i]["caption"];
         var purl =
-          host + `/api/v1.0/p/getpost?postid=${data["list"][i]["postid"]}`;
+          host + `/api/v1.0/p/post?postid=${data["list"][i]["postid"]}`;
         fetch(purl, {
           metod: "GET",
           headers: basicHeader

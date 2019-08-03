@@ -1,4 +1,4 @@
-const host = "http://f982ac52.ngrok.io";
+const host = "http://localhost";
 if (!window.localStorage.hasOwnProperty("x-access-token")) {
   location.href =
     "../../Welcome/welcome.html?redirected=true&referrer=index.html";
@@ -67,11 +67,11 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   document.querySelector(".upload").addEventListener("click", e => {
     let Image = document.getElementById("Image").files[0];
-    let purl = host + `/api/v1.0/a/update/profilepic`;
+    let purl = host + `/api/v1.0/a/profilepic`;
     let form = new FormData();
     form.append("file", Image);
     fetch(purl, {
-      method: "PUT",
+      method: "POST",
       headers: fileHeader,
       body: form
     })
