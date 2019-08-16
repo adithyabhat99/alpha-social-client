@@ -12,6 +12,7 @@ const multiHeader = {
 };
 document.addEventListener("DOMContentLoaded", function() {
   document.querySelector(".send").addEventListener("click", event => {
+    event.preventDefault();
     if (document.getElementById("Image").files.length == 0) {
       alert("Select a file");
       return;
@@ -46,12 +47,12 @@ document.addEventListener("DOMContentLoaded", function() {
           alert(data["error"]);
           return;
         }
+        location.href = "../index.html";
       })
       .catch(error => {
         console.log(error);
         return;
       });
-    location.href = "../index.html";
   });
   document.querySelector(".Image").addEventListener("change", event => {
     document.querySelector(".preview").src = URL.createObjectURL(

@@ -82,6 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
           alert(d["error"]);
           return;
         }
+        location.href = "../index.html";
       })
       .catch(e => {
         console.log(e);
