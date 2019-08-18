@@ -38,6 +38,6 @@ document.addEventListener("DOMContentLoaded", function() {
       });
   });
   document.querySelector(".cancel").addEventListener("click", event => {
-    location.href = `${referrer}?function=${func}&alpha_error=false`;
+    location.href = `${referrer}?function=${func}&alpha_error=true`;
   });
 });
